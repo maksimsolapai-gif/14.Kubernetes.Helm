@@ -1,0 +1,4 @@
+mariadb:
+  primary:
+    podAnnotations:
+      proxy.istio.io/config: '{"holdApplicationUntilProxyStarts": true}'
