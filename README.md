@@ -13,19 +13,16 @@ GitTreeState:"clean", GoVersion:"go1.27.1", KubeClientVersion:"v1.37"}
 ## Project Overview
 Deployment for **WordPress** and **Drupal** applications inside a Kubernetes cluster using **Helm v4** package manager. The setup is integrated with **Istio Service Mesh** for traffic routing and uses **NFS** persistent network storage for databases and application states.
 
-Helm Package Management via OCI
-All charts were pulled directly from the **official Bitnami OCI registry** hosted on Docker Hub (`oci://registry-1.docker.io/bitnamicharts`).
+* All charts were pulled directly from the **official Bitnami OCI registry** hosted on Docker Hub (`oci://registry-1.docker.io/bitnamicharts`).
 
 ---
 
-## Deployment Commands (Helm History)
-
-Below is the verified history of Helm execution commands used to establish the stack:
+## Deployment 
 
 
 # 1. Install WordPress
 ```
-helm install wordpress oci://registry-1.docker.io/bitnamicharts/drupal \
+helm install wordpress oci://registry-1.docker.io/bitnamicharts/wordpress \
   --namespace default \
   --set ingress.enabled=false \
   --set global.storageClass=nfs-app \
@@ -37,7 +34,7 @@ helm install wordpress oci://registry-1.docker.io/bitnamicharts/drupal \
 # 2. Install Drupal
 ```
 helm install drupal
---set drupalUsername=admin,drupalPassword=password,mariadb.auth.rootPassword=secretpassword
+--set drupalUsername=xxx,drupalPassword=xxx,mariadb.auth.rootPassword=secretpassword
 --set global.defaultStorageClass=nfs-client
 --set image.registry=docker.io
 --set image.repository=bitnamilegacy/drupal
@@ -52,15 +49,16 @@ oci://registry-1.docker.io/bitnamicharts/drupal
 
 ### Verification of Releases
 ```bash
-$ helm list -n default
-NAME         NAMESPACE    REVISION    UPDATED                                STATUS      CHART              APP VERSION
-drupal       default      1           2026-09-30 20:10:45.123456 +0300 MSK   deployed    drupal-16.1.6      11.2.3
-wordpress    default      1           2026-09-30 19:45:12.654321 +0300 MSK   deployed    wordpress-24.1.6   6.6.2
+$helm list
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                   APP VERSION
+drupal          default         1               2026-09-30 16:40:11.608087509 +0000 UTC deployed        drupal-23.0.0           11.2.3
+wordpress       default         1               2026-09-30 09:27:35.051593816 +0000 UTC deployed        wordpress-34.1.0        7.1.2
+
 ```
 
 ---
 
-## Network Routing Rules (`istio-routing.yaml`)
+## Routing Rules (`istio-routing.yaml`)
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -117,17 +115,16 @@ spec:
 
 ---
 
-## Validation & Results
 
-1. **Hosts Resolution:** Verified local desktop resolution configuration targeting the global upstream node:
-   ```text
+1. **Hosts Resolution:** 
+   ```
+   vim /etc/hosts
    178.124.206.53  wordpress.k8s-7.sa drupal.k8s-8.sa
    ```
 
 
 ### 3. Application Verification Screenshots
-
-Administrative entry was achieved. Custom dummy pages have been officially published on both platforms displaying my name within the principal level header tags.
+Custom dummy pages have been officially published on both platforms displaying my name.
 
 #### WordPress 
 http://wordpress.k8s-7.sa/
