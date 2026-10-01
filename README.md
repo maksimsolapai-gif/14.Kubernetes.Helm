@@ -34,7 +34,7 @@ helm install wordpress oci://registry-1.docker.io/bitnamicharts/wordpress \
 # 2. Install Drupal
 ```
 helm install drupal
---set drupalUsername=xxx,drupalPassword=xxx,mariadb.auth.rootPassword=secretpassword
+--set drupalUsername=xxx,drupalPassword=xxx,mariadb.auth.rootPassword=xxx
 --set global.defaultStorageClass=nfs-client
 --set image.registry=docker.io
 --set image.repository=bitnamilegacy/drupal
